@@ -18,6 +18,7 @@ class CreateFotosTable extends Migration
             $table->string('titulo');
             $table->string('pais');
             $table->string('foto');
+            $table->boolean('fav')->default(false);
             $table->timestamps();
         });
     }

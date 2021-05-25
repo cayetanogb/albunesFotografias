@@ -4,82 +4,63 @@ namespace App\Http\Controllers;
 
 use App\Models\Foto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class FotoController extends Controller
+class Controller extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('foto.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $foto = new Foto;
+
+        $foto->titulo = $request->input('titulo');
+        $foto->pais = $request->input('pais');
+        $foto->foto = $request->input('foto');
+
+        $albun = $request->input('albun');
+        $albun->fotos()->save($foto);
+
+        return view('home');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Foto  $foto
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Foto $foto)
+    public function show($id)
     {
-        //
+        $foto = Foto::findOrFail($id);
+
+        return view('foto.show', compact('foto'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Foto  $foto
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Foto $foto)
+    public function edit($id)
     {
-        //
+        $foto = Foto::findOrFail($id);
+
+        return view('foto.edit', compact('foto'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Foto  $foto
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Foto $foto)
+    public function update(Request $request, $id)
     {
-        //
+        $foto = Foto::findOrFail($id);
+
+        $foto->titulo = $request->input('titulo');
+        $foto->pais = $request->input('pais');
+        $foto->foto = $request->input('foto');
+
+        return view('home');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Foto  $foto
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Foto $foto)
+    public function destroy($id)
     {
-        //
+        DB::table('fotos')->delete($id);
+
+        return view('home');
     }
 }

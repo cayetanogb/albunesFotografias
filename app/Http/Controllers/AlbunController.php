@@ -3,83 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Models\Albun;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AlbunController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $albunes = Albun::where('user_id', auth()->user()->id);
+
+        return view('albun.index', compact('albunes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('albun.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $albun = new Albun;
+
+        $albun->titulo = $request->input('titulo');
+        $albun->descripcion = $request->input('descripcion');
+        $albun->pais = $request->input('pais');
+
+        $user = User::findOrFail(auth()->user()->id);
+        $user->albunes()->save($albun);
+
+        return view('home');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Albun  $albun
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Albun $albun)
+    public function show($id)
     {
-        //
+        $albun = Albun::findOrFail($id);
+
+        return view('albun.show', compact('albun'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Albun  $albun
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Albun $albun)
+    public function edit($id)
     {
-        //
+        $albun = Albun::findOrFail($id);
+
+        return view('albun.edit', compact('albun'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Albun  $albun
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Albun $albun)
+    public function update(Request $request, $id)
     {
-        //
+        $albun = Albun::findOrFail($id);
+
+        $albun->titulo = $request->input('titulo');
+        $albun->descripcion = $request->input('descripcion');
+        $albun->pais = $request->input('pais');
+
+        $albun->save();
+        return view('home');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Albun  $albun
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Albun $albun)
+    public function destroy($id)
     {
-        //
+        DB::table('albuns')->delete($id);
+
+        return view('home');
     }
 }
