@@ -9,7 +9,15 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    Albunes de Fotografías
+                    <h3>Albunes</h3>
+                    @foreach ($albunes as $albun)
+                        <p>{{ $albun->titulo }}</p>
+                    @endforeach
+
+                    <h3>Fotos destacadas</h3>
+                    @foreach ($fotos as $fot)
+                        <img src="{{ asset('storage/images/' . $fot->foto) }}">
+                    @endforeach
                 </div>
             </div>
         </div>

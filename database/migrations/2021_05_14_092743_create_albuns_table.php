@@ -16,7 +16,7 @@ class CreateAlbunsTable extends Migration
         Schema::create('albuns', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
             $table->string('pais');
 
             $table->unsignedBigInteger('user_id');

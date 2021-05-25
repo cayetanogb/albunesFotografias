@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Albun;
 use Illuminate\Database\Seeder;
 
 class AlbunSeeder extends Seeder
@@ -13,6 +14,10 @@ class AlbunSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Albun::create([
+            'titulo' => 'Albun1',
+            'pais' => 'España',
+            'user_id' => 2
+        ]);
     }
 }
