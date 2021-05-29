@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlbunFoto;
 use App\Models\Albun;
+use App\Models\Foto;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class AlbunController extends Controller
 {
     public function index()
     {
-        $albunes = Albun::where('user_id', auth()->user()->id);
+        $albunes = Albun::where('user_id', auth()->user()->id)->get();
 
         return view('albun.index', compact('albunes'));
     }
@@ -26,20 +29,28 @@ class AlbunController extends Controller
         $albun = new Albun;
 
         $albun->titulo = $request->input('titulo');
+
+        if ($request->hasFile('portada')) $albun->portada = $request->input('portada')->store('images', 'public');
+
         $albun->descripcion = $request->input('descripcion');
         $albun->pais = $request->input('pais');
 
         $user = User::findOrFail(auth()->user()->id);
         $user->albunes()->save($albun);
 
-        return view('home');
+        return redirect()->route('home');
     }
 
     public function show($id)
     {
         $albun = Albun::findOrFail($id);
+        $fotosAlbun = AlbunFoto::select('fotos.titulo', 'fotos.imagen')
+            ->join('fotos', 'fotos.id', 'albun_fotos.foto_id')
+            ->join('albuns', 'albuns.id', 'albun_fotos.albun_id')
+            ->where('albuns.id', $id)
+            ->get();
 
-        return view('albun.show', compact('albun'));
+        return view('albun.show', compact('albun', 'fotosAlbun'));
     }
 
     public function edit($id)
@@ -54,17 +65,44 @@ class AlbunController extends Controller
         $albun = Albun::findOrFail($id);
 
         $albun->titulo = $request->input('titulo');
+
+        if ($request->hasFile('portada')) $albun->portada = $request->input('portada')->store('images', 'public');
+
         $albun->descripcion = $request->input('descripcion');
         $albun->pais = $request->input('pais');
 
         $albun->save();
-        return view('home');
+        return redirect()->route('home');
     }
 
     public function destroy($id)
     {
         DB::table('albuns')->delete($id);
 
-        return view('home');
+        return redirect()->route('home');
+    }
+
+    public function addFoto($id)
+    {
+        $albun = Albun::findOrFail($id);
+        $fotos = Foto::all();
+
+        return view('albun.addFoto', compact('albun', 'fotos'));
+    }
+
+    public function storeFoto(Request $request, $id)
+    {
+        $albunFoto = new AlbunFoto;
+
+        $albunFoto->albun_id = $id;
+        $albunFoto->foto_id = $request->input('foto_id');
+
+        $comparar = AlbunFoto::where('albun_id', $albunFoto->albun_id)->where('foto_id', $albunFoto->foto_id)->get();
+
+        if (empty($comparar[0])) {
+            $albunFoto->save();
+        }
+
+        return redirect()->route('showAlbun', $id);
     }
 }

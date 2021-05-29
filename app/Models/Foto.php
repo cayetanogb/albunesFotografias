@@ -8,9 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class Foto extends Model
 {
     use HasFactory;
-
-    public function albunes()
-    {
-        return $this->belongsToMany(Albun::class);
-    }
 }

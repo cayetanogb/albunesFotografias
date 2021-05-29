@@ -17,7 +17,7 @@ class CreateFotosTable extends Migration
             $table->id();
             $table->string('titulo');
             $table->string('pais');
-            $table->string('foto');
+            $table->string('imagen');
             $table->boolean('fav')->default(false);
             $table->timestamps();
         });
@@ -31,5 +31,6 @@ class CreateFotosTable extends Migration
     public function down()
     {
         Schema::dropIfExists('fotos');
+        Schema::dropIfExists('albun_foto');
     }
 }

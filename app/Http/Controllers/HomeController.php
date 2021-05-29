@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         $albunes = Albun::all();
-        $fotos = Foto::where('fav', 1);
+        $fotos = Foto::where('fav', 1)->get();
 
         return view('home', compact('albunes', 'fotos'));
     }

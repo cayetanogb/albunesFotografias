@@ -10,12 +10,23 @@
         @if (Auth::check())
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto">
+                    @if (auth()->user()->rol == 'admin')
+                        <li
+                            class="nav-item {{ Request::is('fotos') && !Request::is('fotos/create') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('indexFoto') }}">Fotos</a>
+                        </li>
+                    @endif
                     <li class="nav-item {{ Request::is('albun') && !Request::is('albun/create') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('index') }}">Albunes</a>
+                        <a class="nav-link" href="{{ route('indexAlbun') }}">Albunes</a>
                     </li>
                     <li class="nav-item {{ Request::is('albun/create') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('createAlbun') }}">
-                            <span>&#10010;</span> Nueva albun
+                            <span>&#10010;</span> Nuevo albun
+                        </a>
+                    </li>
+                    <li class="nav-item {{ Request::is('foto/create') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('createFoto') }}">
+                            <span>&#10010;</span> Nueva foto
                         </a>
                     </li>
                 </ul>

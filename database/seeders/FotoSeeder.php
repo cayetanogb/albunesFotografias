@@ -17,28 +17,28 @@ class FotoSeeder extends Seeder
         Foto::create([
             'titulo' => 'campo',
             'pais' => 'España',
-            'foto' => '1.jpg',
+            'imagen' => 'images/1.jpg',
             'fav' => false
         ]);
 
         Foto::create([
             'titulo' => 'guepardo',
             'pais' => 'Argelia',
-            'foto' => '2.jpg',
+            'imagen' => 'images/2.jpg',
             'fav' => true
         ]);
 
         Foto::create([
             'titulo' => 'paisaje',
             'pais' => 'Finlandia',
-            'foto' => '3.jpg',
+            'imagen' => 'images/3.jpg',
             'fav' => true
         ]);
 
         Foto::create([
             'titulo' => 'calle blanco y negro',
             'pais' => 'Inglaterra',
-            'foto' => '6.jpg',
+            'imagen' => 'images/6.jpg',
             'fav' => false
         ]);
     }

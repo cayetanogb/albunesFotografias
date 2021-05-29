@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $usuario = User::findOrFail(auth()->user());
+        $usuario = User::findOrFail(auth()->user()->id);
 
         return view('user.perfil', compact('usuario'));
     }
@@ -24,19 +24,17 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $usuario = User::findOrFail($id);
 
-        $user->nombre = $request->input('nombre');
-        $user->sexo = $request->input('sexo');
-        $user->fechaNacimiento = $request->input('fechaNacimiento');
-        $user->ciudad = $request->input('ciudad');
-        $user->pais = $request->input('pais');
-        $user->foto = $request->input('foto');
-        $user->email = $request->input('email');
-        $user->password = $request->input('password');
+        $usuario->nombre = $request->input('nombre');
+        $usuario->fechaNacimiento = $request->input('fechaNacimiento');
+        $usuario->ciudad = $request->input('ciudad');
+        $usuario->pais = $request->input('pais');
+        $usuario->foto = $request->input('foto');
+        $usuario->email = $request->input('email');
 
-        $user->save();
-        return view('user.perfil');
+        $usuario->save();
+        return view('user.perfil', compact('usuario'));
     }
 
     public function destroy($id)

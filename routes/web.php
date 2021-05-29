@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlbunController;
+use App\Http\Controllers\FotoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/albun/create', [AlbunController::class, 'store'])->name('storeAlbun');
 
+    Route::get('/albun/añadirFoto/{id}', [AlbunController::class, 'addFoto'])->name('addFoto');
+
+    Route::post('/albun/añadirFoto/{id}', [AlbunController::class, 'storeFoto'])->name('storeFotoAlbun');
+
     Route::get('/albun/edit/{id}', [AlbunController::class, 'edit'])->name('editAlbun');
 
     Route::put('/albun/edit/{id}', [AlbunController::class, 'update'])->name('updateAlbun');
@@ -31,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/albun/delete/{id}', [AlbunController::class, 'destroy'])->name('deleteAlbun');
 
     Route::get('/foto', [FotoController::class, 'index'])->name('indexFoto');
+
+    Route::put('/foto/{id}', [FotoController::class, 'destacado'])->name('destacadoFoto');
 
     Route::get('/foto/show/{id}', [FotoController::class, 'show'])->name('showFoto');
 

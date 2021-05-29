@@ -5,12 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Foto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
-class Controller extends Controller
+class FotoController extends Controller
 {
     public function index()
     {
-        //
+        $fotos = Foto::all();
+
+        return view('foto.index', compact('fotos'));
+    }
+
+    public function destacado(Request $request, $id)
+    {
+        $foto = Foto::findOrFail($id);
+
+        $foto->fav = $request->input('fav');
+        $foto->save();
+
+        return redirect()->route('indexFoto');
     }
 
     public function create()
@@ -23,13 +36,14 @@ class Controller extends Controller
         $foto = new Foto;
 
         $foto->titulo = $request->input('titulo');
+
+        if ($request->hasFile('imagen')) $foto->imagen = $request->input('imagen')->store('images', 'public');
+
         $foto->pais = $request->input('pais');
-        $foto->foto = $request->input('foto');
 
-        $albun = $request->input('albun');
-        $albun->fotos()->save($foto);
+        $foto->save();
 
-        return view('home');
+        return redirect()->route('home');
     }
 
     public function show($id)
@@ -52,15 +66,18 @@ class Controller extends Controller
 
         $foto->titulo = $request->input('titulo');
         $foto->pais = $request->input('pais');
-        $foto->foto = $request->input('foto');
 
-        return view('home');
+        if ($request->hasFile('imagen')) $foto->imagen = $request->file('imagen')->store('images', 'public');
+
+        $foto->save();
+
+        return redirect()->route('home');
     }
 
     public function destroy($id)
     {
         DB::table('fotos')->delete($id);
 
-        return view('home');
+        return redirect()->route('home');
     }
 }

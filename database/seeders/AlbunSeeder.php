@@ -16,6 +16,8 @@ class AlbunSeeder extends Seeder
     {
         Albun::create([
             'titulo' => 'Albun1',
+            'descripcion' => 'fotografias',
+            'portada' => 'images/5.jpg',
             'pais' => 'España',
             'user_id' => 2
         ]);
