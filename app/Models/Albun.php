@@ -13,4 +13,9 @@ class Albun extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function fotos()
+    {
+        return $this->belongsToMany(Foto::class);
+    }
 }

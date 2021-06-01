@@ -37,7 +37,7 @@ class FotoController extends Controller
 
         $foto->titulo = $request->input('titulo');
 
-        if ($request->hasFile('imagen')) $foto->imagen = $request->input('imagen')->store('images', 'public');
+        if ($request->hasFile('imagen')) $foto->imagen = $request->file('imagen')->store('images', 'public');
 
         $foto->pais = $request->input('pais');
 

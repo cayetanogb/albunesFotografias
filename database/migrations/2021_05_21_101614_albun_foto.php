@@ -13,7 +13,7 @@ class AlbunFoto extends Migration
      */
     public function up()
     {
-        Schema::create('albun_fotos', function (Blueprint $table) {
+        Schema::create('albun_foto', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('albun_id');

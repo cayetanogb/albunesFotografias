@@ -8,7 +8,6 @@ use App\Models\Foto;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class AlbunController extends Controller
 {
@@ -30,7 +29,7 @@ class AlbunController extends Controller
 
         $albun->titulo = $request->input('titulo');
 
-        if ($request->hasFile('portada')) $albun->portada = $request->input('portada')->store('images', 'public');
+        if ($request->hasFile('portada')) $albun->portada = $request->file('portada')->store('images', 'public');
 
         $albun->descripcion = $request->input('descripcion');
         $albun->pais = $request->input('pais');
@@ -44,11 +43,7 @@ class AlbunController extends Controller
     public function show($id)
     {
         $albun = Albun::findOrFail($id);
-        $fotosAlbun = AlbunFoto::select('fotos.titulo', 'fotos.imagen')
-            ->join('fotos', 'fotos.id', 'albun_fotos.foto_id')
-            ->join('albuns', 'albuns.id', 'albun_fotos.albun_id')
-            ->where('albuns.id', $id)
-            ->get();
+        $fotosAlbun = $albun->fotos;
 
         return view('albun.show', compact('albun', 'fotosAlbun'));
     }
@@ -66,7 +61,7 @@ class AlbunController extends Controller
 
         $albun->titulo = $request->input('titulo');
 
-        if ($request->hasFile('portada')) $albun->portada = $request->input('portada')->store('images', 'public');
+        if ($request->hasFile('portada')) $albun->portada = $request->file('portada')->store('images', 'public');
 
         $albun->descripcion = $request->input('descripcion');
         $albun->pais = $request->input('pais');

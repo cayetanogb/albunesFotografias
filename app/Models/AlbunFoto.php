@@ -9,13 +9,5 @@ class AlbunFoto extends Model
 {
     use HasFactory;
 
-    public function albunes()
-    {
-        return $this->belongsToMany(Albun::class);
-    }
-
-    public function fotos()
-    {
-        return $this->belongsToMany(Foto::class);
-    }
+    protected $table = 'albun_foto';
 }
